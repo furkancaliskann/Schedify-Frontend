@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import Login from './components/Login';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import axios from 'axios';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Todo {
+  id: number;
+  title: string;
+  description: string;
 }
 
-export default App
+function App() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [jwtToken, setJwtToken] = useState<string | null>(null);
+
+  const fetchTodos = async (token: string) => {
+    try {
+      const response = await axios.get('https://localhost:7128/api/todos', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data && Array.isArray(response.data.data)) {
+        setTodos(response.data.data);
+      } else {
+        setError('No todos found');
+      }
+      //console.log(response.data);
+    } catch (err) {
+      setError('Error fetching todos');
+      console.error(err);
+    }
+  };
+
+  const handleLoginSuccess = (token: string) => {
+    setJwtToken(token);
+    fetchTodos(token);
+    //console.log('Google login success:', token);
+  };
+
+  return (
+    <GoogleOAuthProvider clientId="402020546066-5a17dkenlt3dmd33v92qs6273it35e39.apps.googleusercontent.com">
+      <div>
+        {!jwtToken ? (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        ) : (
+          <div>
+            <h1>Todos</h1>
+            {error && <p>{error}</p>}
+            <ul>
+              {todos.length > 0 ? (
+                todos.map((todo) => (
+                  <li key={todo.id}>
+                    {todo.title} - {todo.description}
+                  </li>
+                ))
+              ) : (
+                <p>No todos available</p>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
+    </GoogleOAuthProvider>
+  );
+}
+
+export default App;
