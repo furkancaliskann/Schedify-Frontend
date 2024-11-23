@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
+# **Schedify-Frontend**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Schedify-Frontend**, kullanıcıların etkinliklerini planlayıp yönetmelerini kolaylaştıran bir **React** tabanlı frontend uygulamasıdır. Bu uygulama, **Schedify-Backend** API'si ile entegre çalışarak etkinlik oluşturma, düzenleme, silme ve listeleme gibi özellikler sunar.
 
-Currently, two official plugins are available:
+## **Hedef**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Schedify-Frontend, modern bir arayüz ve sezgisel bir kullanıcı deneyimi sunarak etkinlik yönetimini basit ve verimli hale getirmeyi amaçlar.
 
-## Expanding the ESLint configuration
+## **Temel Özellikler**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Etkinlik Listesi**: Kullanıcılar, tüm etkinliklerini görsel olarak listeleyebilir.
+- **Etkinlik Oluşturma**: Başlık, açıklama ve tarih gibi bilgileri doldurarak yeni etkinlikler eklenebilir.
+- **Etkinlik Güncelleme**: Mevcut etkinlik bilgileri güncellenebilir.
+- **Etkinlik Silme**: Kullanıcılar, artık ihtiyaç duymadıkları etkinlikleri silebilir.
+- **Kullanıcı Doğrulama**: Google OAuth ile giriş yaparak kişisel etkinliklere erişim sağlanır.
+- **Duyarlı Tasarım**: Masaüstü ve mobil cihazlar için optimize edilmiş kullanıcı arayüzü.
 
-- Configure the top-level `parserOptions` property like this:
+## **Teknolojiler**
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **Frontend Framework**: React (**Vite + TypeScript**)
+- **UI Kütüphanesi**: Material UI
+- **Durum Yönetimi**: React Redux
+- **HTTP İstekleri**: Axios
+- **Doğrulama ve Form Yönetimi**: React Hook Form ve Yup
+- **İkonlar ve Grafikler**: React Icons
