@@ -7,12 +7,13 @@ interface LoginProps {
 
 function Login({ onLoginSuccess }: LoginProps) {
     const handleGoogleLogin = async (response: any) => {
-        //console.log('Google response: ', response.credential);
-
         try {
+            // Google'dan alınan id_token'ı backend'e gönderiyoruz
             const res = await axios.post('https://localhost:7128/api/auth/google/callback', {
-                id_token: response.credential,
+                id_token: response.credential, // credential, Google login'den alınan ID token
             });
+
+            // Backend'den gelen JWT token'ı onLoginSuccess fonksiyonuna gönderiyoruz
             onLoginSuccess(res.data.token);
         } catch (error) {
             console.error('Google login error: ', error);
@@ -22,8 +23,8 @@ function Login({ onLoginSuccess }: LoginProps) {
     return (
         <div>
             <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onError={() => console.log('Login Failed')}
+                onSuccess={handleGoogleLogin} // Başarılı login işlemi sonrası handleGoogleLogin tetikleniyor
+                onError={() => console.log('Login Failed')} // Login başarısız olursa hata mesajı
             />
         </div>
     );
