@@ -19,7 +19,6 @@ Schedify-Frontend, modern bir arayüz ve sezgisel bir kullanıcı deneyimi sunar
 
 - **Frontend Framework**: React (**Vite + TypeScript**)
 - **UI Kütüphanesi**: Material UI
-- **Durum Yönetimi**: React Redux
 - **HTTP İstekleri**: Axios
 - **Doğrulama ve Form Yönetimi**: React Hook Form ve Yup
-- **İkonlar ve Grafikler**: React Icons
+- **İkonlar ve Grafikler**: Material Icons

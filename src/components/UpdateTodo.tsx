@@ -1,20 +1,21 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { TodoUpdate } from './Api';
-import { Button, TextField, MenuItem, Select, FormControl, InputLabel, FormHelperText, Typography } from '@mui/material';
+import { Todo } from './Todos';
+import { TextField, Button, MenuItem, Select, InputLabel, FormControl, FormHelperText, Typography } from '@mui/material';
 
-interface AddTodoProps {
-    onAddTodo: (addedTodo: TodoUpdate) => void;
+interface UpdateTodoProps {
+    todo: Todo;
+    onUpdateTodo: (updatedTodo: Todo) => void;
     onCancel: () => void;
 }
 
-const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
+const UpdateTodo = ({ todo, onUpdateTodo, onCancel }: UpdateTodoProps) => {
     const formik = useFormik({
         initialValues: {
-            title: '',
-            description: '',
-            dueDate: '',
-            status: 0,
+            title: todo.title,
+            description: todo.description,
+            dueDate: todo.dueDate,
+            status: todo.status,
         },
         validationSchema: Yup.object({
             title: Yup.string()
@@ -37,28 +38,29 @@ const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
                 dueDate.getSeconds()
             ));
 
-            console.log(utcDueDate.toISOString());
-
-            onAddTodo({
+            onUpdateTodo({
                 ...values,
                 dueDate: utcDueDate.toISOString(),
                 status: Number(values.status),
+                id: todo.id,
+                createdAt: todo.createdAt,
+                updatedAt: new Date().toISOString(),
             });
-        },
+        }
     });
 
     return (
-        <div style={{ padding: '20px', maxWidth: '600px', margin: '10px auto' }}>
+        <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
             <Typography variant="h4" gutterBottom style={{ marginBottom: '40px' }}>
-                Add New Todo
+                Update Todo
             </Typography>
             <form onSubmit={formik.handleSubmit}>
                 <div style={{ marginBottom: '15px' }}>
                     <TextField
                         fullWidth
+                        label="Title"
                         id="title"
                         name="title"
-                        label="Title"
                         value={formik.values.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -66,29 +68,27 @@ const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
                         helperText={formik.touched.title && formik.errors.title}
                     />
                 </div>
-
                 <div style={{ marginBottom: '15px' }}>
                     <TextField
                         fullWidth
+                        label="Description"
                         id="description"
                         name="description"
-                        label="Description"
-                        multiline
-                        rows={4}
                         value={formik.values.description}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         error={formik.touched.description && Boolean(formik.errors.description)}
                         helperText={formik.touched.description && formik.errors.description}
+                        multiline
+                        rows={4}
                     />
                 </div>
-
                 <div style={{ marginBottom: '15px' }}>
                     <TextField
                         fullWidth
+                        label="Due Date"
                         id="dueDate"
                         name="dueDate"
-                        label="Due Date"
                         type="datetime-local"
                         value={formik.values.dueDate}
                         onChange={formik.handleChange}
@@ -100,9 +100,8 @@ const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
                         }}
                     />
                 </div>
-
                 <div style={{ marginBottom: '15px' }}>
-                    <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
+                    <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)} sx={{ marginTop: '10px' }}>
                         <InputLabel id="status-label">Status</InputLabel>
                         <Select
                             labelId="status-label"
@@ -121,7 +120,6 @@ const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
                         <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
                     </FormControl>
                 </div>
-
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button
                         variant="contained"
@@ -129,7 +127,7 @@ const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
                         type="submit"
                         disabled={!formik.isValid || formik.isSubmitting}
                     >
-                        Add Todo
+                        Update Todo
                     </Button>
                     <Button
                         variant="outlined"
@@ -145,4 +143,4 @@ const AddTodo = ({ onAddTodo, onCancel }: AddTodoProps) => {
     );
 };
 
-export default AddTodo;
+export default UpdateTodo;
